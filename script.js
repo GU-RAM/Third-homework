@@ -210,7 +210,7 @@ const people1 = [
 function groupBy(array, key) {
   // your code goes here...
   return array.reduce((acc, curr) => {
-    if (Object.keys(acc).includes(`${curr[key]}`)) {
+    if (`${curr[key]}` in acc) {
       acc[curr[key]].push(curr);
     } else {
       acc[curr[key]] = [curr];
@@ -221,7 +221,8 @@ function groupBy(array, key) {
 
 // for 'people' array, if I group by 'age', this function must
 // return the following object
-const grouped = groupBy(people1, "age");
+// const grouped = groupBy(people1, "age");
+console.log(groupBy(people1, "age"));
 
 //  =>
 // {
