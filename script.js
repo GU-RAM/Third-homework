@@ -99,7 +99,6 @@ let fn1 = (x) => x % 2 === 0;
 function myFilter(arr, fn) {
   let filtered = [];
   arr.forEach((i) => {
-    console.log(i);
     if (fn(i)) {
       filtered.push(i);
     }
@@ -126,23 +125,23 @@ function myEvery(arr3, fn1) {
 myEvery(arr2, fn);
 
 // reduce
-let arr4 = [];
+let arr4 = [1, 2, 3, 5];
 
-function myReduce(arr5) {
-  let reducedArr = function (arr6) {
-    if (!arr6.length) {
-      throw new TypeError("myReduce is called on null or undefined");
-    } else if (typeof arr6[0] === "number") {
-      return 0;
-    } else if (typeof arr6[0] === "string") {
-      return "";
+function myReduce(arr5, initValue) {
+  let accumulator = initValue;
+
+  arr5.forEach((el, i) => {
+    if (typeof accumulator === "number" || typeof accumulator === "string") {
+      accumulator += el;
+    } else if (accumulator !== null && typeof accumulator === "object") {
+      accumulator[i] = el;
+    } else if (Array.isArray(accumulator)) {
+      accumulator.push(el);
+    } else {
+      accumulator += el;
     }
-  };
-
-  arr5.forEach((el) => {
-    reducedArr += el;
   });
-  return reducedArr;
+  return accumulator;
 }
 
 // --- დავალება4 ---
@@ -150,15 +149,15 @@ function myReduce(arr5) {
 let ladder = {
   step: 0,
 
-  up: function () {
+  up() {
     this.step++;
     return this;
   },
-  down: function () {
+  down() {
     this.step--;
     return this;
   },
-  showStep: function () {
+  showStep() {
     // shows the current step
     alert(this.step);
     return this;
