@@ -39,16 +39,17 @@ const people = [
 
 // 1.Calculate sum of all teacher salaries
 let sumOfTeachersSalaries = people
-  .filter((p) => p.occupation === "teacher")
+  .filter((p) => p.occupation === "Teacher")
   .reduce((acc, curr) => {
     acc += curr.salary;
     return acc;
   }, 0);
 
 // 2. Create a new array with the same people but double salaries of developers
-const newArr = people.map((x) => {
-  x.salary *= 2;
-  return x;
+const newArr = people.map((p) => {
+  return p.occupation === "Developer"
+    ? { ...p, salary: p.salary * 2 }
+    : { ...p };
 });
 
 // 3. Filter people who has a dog
@@ -62,17 +63,8 @@ const ifAnyPeopleIS30Age = people.some((x) => x.age > 30);
 
 // --- დავალება N2 ---
 // flatten arrays into a single array
-let flattenArray = [];
-function flatten(arr) {
-  // your code here
-  arr.forEach((x) => {
-    if (Array.isArray(x)) {
-      flattenArray.push(...x);
-    } else {
-      flattenArray.push(x);
-    }
-  });
-  return flattenArray;
+function flattenArray(arr) {
+  return arr.reduce((acc, curr) => acc.concat(curr), []);
 }
 const arrays = [["first", "second"], [1, 2, 3], [true], 1];
 
@@ -82,17 +74,18 @@ const arrays = [["first", "second"], [1, 2, 3], [true], 1];
 // implement polyfill functions for map, filter, every, reduce
 // map
 let arr = [1, 2, 3, 4];
+const fnMap = (x) => x + 2;
 
-function myMap(arr1) {
+function myMap(arr1, fn) {
   let mapArr = [];
 
   arr1.forEach((el) => {
-    mapArr.push(el);
+    mapArr.push(fn(el));
   });
 
   return mapArr;
 }
-myMap(arr);
+myMap(arr, fnMap);
 
 // filter
 let arr10 = [1, 2, 4, 6];
@@ -110,41 +103,36 @@ function myFilter(arr, fn) {
 let arr11 = myFilter(arr10, fn1);
 
 // every
-let arr2 = [1, 2, 3, 4];
-let fn = (x) => x > 2;
+let arr2 = [2, 4, 6, 8];
+let fn = (x) => x % 2 === 0;
 
 function myEvery(arr3, fn1) {
-  let everyArr = [];
-
-  arr3.forEach((el) => {
-    if (fn1(el)) {
-      everyArr.push(el);
+  for (let i = 0; i < arr3.length; i++) {
+    if (!fn1(arr3[i])) {
+      return false;
     }
-  });
+  }
 
-  return everyArr.length === arr3.length;
+  return true;
 }
 myEvery(arr2, fn);
 
 // reduce
-let arr4 = [1, 2, 3, 5];
+let arr4 = [1, 2, 3, 4, 5];
+const fnReduce = (acc, curr) => (acc += curr);
 
-function myReduce(arr5, initValue) {
-  let accumulator = initValue;
+function myReducer(arr5, fn, accumulator) {
+  let i = accumulator === undefined ? 1 : 0;
+  accumulator = accumulator === undefined ? arr[0] : accumulator;
 
-  arr5.forEach((el, i) => {
-    if (typeof accumulator === "number" || typeof accumulator === "string") {
-      accumulator += el;
-    } else if (accumulator !== null && typeof accumulator === "object") {
-      accumulator[i] = el;
-    } else if (Array.isArray(accumulator)) {
-      accumulator.push(el);
-    } else {
-      accumulator += el;
-    }
-  });
+  while (i < arr5.length) {
+    accumulator = fn(accumulator, arr5[i]);
+    i++;
+  }
   return accumulator;
 }
+
+console.log(myReducer(arr4, fnReduce, 0));
 
 // --- დავალება4 ---
 // There’s a ladder object that allows to go up and down:
@@ -223,8 +211,7 @@ function groupBy(array, key) {
 
 // for 'people' array, if I group by 'age', this function must
 // return the following object
-// const grouped = groupBy(people1, "age");
-console.log(groupBy(people1, "age"));
+const grouped = groupBy(people1, "age");
 
 //  =>
 // {
