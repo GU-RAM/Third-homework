@@ -38,10 +38,12 @@ const people = [
 ];
 
 // 1.Calculate sum of all teacher salaries
-let sumOfTeachersSalaries = people.reduce((acc, curr) => {
-  acc += curr.salary;
-  return acc;
-}, 0);
+let sumOfTeachersSalaries = people
+  .filter((p) => p.occupation === "teacher")
+  .people.reduce((acc, curr) => {
+    acc += curr.salary;
+    return acc;
+  }, 0);
 
 // 2. Create a new array with the same people but double salaries of developers
 const newArr = people.map((x) => {
