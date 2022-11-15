@@ -40,7 +40,7 @@ const people = [
 // 1.Calculate sum of all teacher salaries
 let sumOfTeachersSalaries = people
   .filter((p) => p.occupation === "teacher")
-  .people.reduce((acc, curr) => {
+  .reduce((acc, curr) => {
     acc += curr.salary;
     return acc;
   }, 0);
